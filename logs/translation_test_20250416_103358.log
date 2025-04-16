@@ -1,0 +1,47 @@
+2025-04-16 10:33:58,619 - INFO - Loaded configuration from config.json
+2025-04-16 10:33:58,620 - INFO - ====== WebDriver manager ======
+2025-04-16 10:34:19,222 - INFO - Get LATEST chromedriver version for google-chrome
+2025-04-16 10:34:19,453 - INFO - Get LATEST chromedriver version for google-chrome
+2025-04-16 10:34:19,665 - INFO - There is no [win64] chromedriver "135.0.7049.95" for browser google-chrome "135.0.7049" in cache
+2025-04-16 10:34:19,665 - INFO - Get LATEST chromedriver version for google-chrome
+2025-04-16 10:34:20,167 - INFO - WebDriver version 135.0.7049.95 selected
+2025-04-16 10:34:20,173 - INFO - Modern chrome version https://storage.googleapis.com/chrome-for-testing-public/135.0.7049.95/win32/chromedriver-win32.zip
+2025-04-16 10:34:20,173 - INFO - About to download new driver from https://storage.googleapis.com/chrome-for-testing-public/135.0.7049.95/win32/chromedriver-win32.zip
+2025-04-16 10:34:20,574 - INFO - Driver downloading response is 200
+2025-04-16 10:34:22,502 - INFO - Get LATEST chromedriver version for google-chrome
+2025-04-16 10:34:22,742 - INFO - Driver has been saved in cache [C:\Users\Bao To\.wdm\drivers\chromedriver\win64\135.0.7049.95]
+2025-04-16 10:34:24,520 - INFO - Loading translations from CDB-Translate.xlsx
+2025-04-16 10:34:24,851 - INFO - Successfully loaded 1358 translation entries
+2025-04-16 10:34:24,851 - INFO - Setup completed successfully
+2025-04-16 10:34:24,852 - INFO - Navigating to https://corp-banking.sit.bic.tech
+2025-04-16 10:34:25,990 - INFO - Waiting for login form
+2025-04-16 10:34:26,488 - INFO - Entering credentials
+2025-04-16 10:34:26,638 - INFO - Submitting login form
+2025-04-16 10:34:37,077 - INFO - No 2FA detected, proceeding
+2025-04-16 10:34:57,650 - ERROR - Login failed: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00428073+60707]
+	GetHandleVerifier [0x004280B4+60772]
+	(No symbol) [0x00250683]
+	(No symbol) [0x00298660]
+	(No symbol) [0x002989FB]
+	(No symbol) [0x002E1022]
+	(No symbol) [0x002BD094]
+	(No symbol) [0x002DE824]
+	(No symbol) [0x002BCE46]
+	(No symbol) [0x0028C5D3]
+	(No symbol) [0x0028D424]
+	GetHandleVerifier [0x0066BB53+2435075]
+	GetHandleVerifier [0x006670F3+2416035]
+	GetHandleVerifier [0x0068349C+2531660]
+	GetHandleVerifier [0x0043F145+155125]
+	GetHandleVerifier [0x00445AED+182173]
+	GetHandleVerifier [0x0042F948+91640]
+	GetHandleVerifier [0x0042FAF0+92064]
+	GetHandleVerifier [0x0041A5B0+4704]
+	BaseThreadInitThunk [0x76375D49+25]
+	RtlInitializeExceptionChain [0x76EBCF0B+107]
+	RtlGetAppContainerNamedObjectPath [0x76EBCE91+561]
+
+2025-04-16 10:34:57,782 - INFO - Screenshot saved: screenshots/login_failure_20250416_103457.png
+2025-04-16 10:34:57,782 - ERROR - Login failed, aborting test

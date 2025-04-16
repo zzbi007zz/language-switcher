@@ -1,0 +1,24 @@
+2025-04-16 10:39:41,567 - INFO - Loaded configuration from config.json
+2025-04-16 10:39:41,568 - INFO - ====== WebDriver manager ======
+2025-04-16 10:40:02,720 - INFO - Get LATEST chromedriver version for google-chrome
+2025-04-16 10:40:02,928 - INFO - Get LATEST chromedriver version for google-chrome
+2025-04-16 10:40:03,073 - INFO - Driver [C:\Users\Bao To\.wdm\drivers\chromedriver\win64\135.0.7049.95\chromedriver-win32/chromedriver.exe] found in cache
+2025-04-16 10:40:04,567 - INFO - Loading translations from CDB-Translate.xlsx
+2025-04-16 10:40:04,760 - INFO - Successfully loaded 1358 translation entries
+2025-04-16 10:40:04,761 - INFO - Setup completed successfully
+2025-04-16 10:40:04,761 - INFO - Navigating to https://corp-banking.sit.bic.tech
+2025-04-16 10:40:10,767 - INFO - Waiting for login form
+2025-04-16 10:40:10,768 - ERROR - Login failed: module 'selenium.webdriver.support.expected_conditions' has no attribute 'presence_of_any_element_located'
+2025-04-16 10:40:10,927 - INFO - Screenshot saved: screenshots/login_failure_20250416_104010.png
+2025-04-16 10:40:10,937 - ERROR - Current URL: https://keycloak-test.bic.tech/realms/business-banking/protocol/openid-connect/auth?client_id=bb-web-client&redirect_uri=https%3A%2F%2Fcorp-banking.sit.bic.tech%2F&state=0869a9b5-b994-43f8-932b-449fb377aa7e&response_mode=fragment&response_type=code&scope=openid&nonce=c7da7250-52d4-4dad-a678-1fb7271e6c76&code_challenge=dgEqR7kNzYEnJ123CQpbahB4Qbs7REnHKdv6aN65QX8&code_challenge_method=S256
+2025-04-16 10:40:10,944 - ERROR - Page source: <html xmlns="http://www.w3.org/1999/xhtml" class="login-pf"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>
+      Sign in to business-banking
+    </title>
+    <link rel="icon" href="/resources/o6yb2/login/bicbank/img/favicon.ico">
+        <link href="/resources/o6yb2/login/bicbank/css/bootstrap_v5.0....
+2025-04-16 10:40:10,944 - ERROR - Login failed, aborting test

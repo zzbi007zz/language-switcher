@@ -1,0 +1,21 @@
+{
+    "base_url": "https://corp-banking.sit.bic.tech",
+    "excel_path": "CDB-Translate.xlsx",
+    "browsers": ["chrome", "firefox"],
+    "screenshot_on_mismatch": true,
+    "check_dynamic_content": true,
+    "headless": false,
+    "wait_time": 10,
+    "navigation_paths": [
+      ["Dashboard"],
+      ["Account"],
+      ["Account", "Account List"],
+      ["Pay & Transfer"],
+      ["Pay & Transfer", "Domestic Transfer"],
+      ["Pay & Transfer", "Bill Payment"],
+      ["Pay & Transfer", "Payroll"],
+      ["Pay & Transfer", "Beneficiary"],
+      ["Requests"]
+    ]
+  }
+  
