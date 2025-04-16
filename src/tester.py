@@ -209,44 +209,118 @@ class TranslationTester:
             self.take_screenshot("2fa_handling_failure")
             raise
 
-    def change_language(self, language):
-        """
-        Change the application language
-
-        Args:
-            language (str): Language code ('en', 'kh', 'cn')
-        """
+def change_language(self, language_code):
+    """
+    Enhanced language change function with wait verification
+    
+    Args:
+        language_code (str): 'en', 'kh', or 'cn'
+    """
+    try:
+        # Map of language codes to display text and attributes
+        language_map = {
+            'en': {'text': 'English', 'value': 'en', 'attr': 'english'},
+            'kh': {'text': 'ខ្មែរ', 'value': 'kh', 'attr': 'khmer'},
+            'cn': {'text': '中文', 'value': 'cn', 'attr': 'chinese'},
+        }
+        
+        # Multiple strategies to find language selector
+        selector_strategies = [
+            # Strategy 1: Common language selector button/dropdown
+            ("//button[contains(@class,'language') or contains(@class,'lang-switcher')]", 
+             f"//li[contains(text(),'{language_map[language_code]['text']}') or @value='{language_map[language_code]['value']}']"),
+            
+            # Strategy 2: Icon-based language selector
+            ("//div[contains(@class,'language-selector') or contains(@class,'lang-select')]", 
+             f"//a[contains(@class,'{language_map[language_code]['attr']}') or @data-lang='{language_code}']"),
+             
+            # Strategy 3: Direct language links
+            (None, f"//a[contains(@class,'lang') and (contains(text(),'{language_map[language_code]['text']}') or @data-lang='{language_code}')]")
+        ]
+        
+        for opener_selector, language_selector in selector_strategies:
+            try:
+                # If two-step (opener then selector)
+                if opener_selector:
+                    opener = self.find_element_safe(By.XPATH, opener_selector, timeout=5)
+                    if opener:
+                        self.driver.execute_script("arguments[0].click();", opener)
+                        time.sleep(0.5)  # Wait for dropdown to appear
+                
+                # Select the language option
+                language_option = self.find_element_safe(By.XPATH, language_selector, timeout=5)
+                if language_option:
+                    self.driver.execute_script("arguments[0].click();", language_option)
+                    
+                    # Wait for page to refresh or update after language change
+                    WebDriverWait(self.driver, 10).until(
+                        EC.staleness_of(language_option) or 
+                        EC.presence_of_element_located((By.TAG_NAME, "body"))
+                    )
+                    
+                    # Additional wait for AJAX to complete
+                    time.sleep(2)
+                    
+                    # Verify language change by checking HTML lang attribute or other indicators
+                    html_element = self.driver.find_element(By.TAG_NAME, "html")
+                    page_lang = html_element.get_attribute("lang") or ""
+                    
+                    # Check if language changed correctly (approximation)
+                    if language_code.lower() in page_lang.lower() or self.verify_language_change(language_code):
+                        logger.info(f"Successfully changed language to {language_code}")
+                        return True
+            
+            except Exception as e:
+                logger.debug(f"Language change strategy failed: {str(e)}")
+                continue
+                
+        # Final fallback: Try direct URL parameter if applicable
         try:
-            # Wait for language selector to be clickable
-            language_button = WebDriverWait(self.driver, 10).until(
-                EC.element_to_be_clickable((By.XPATH, "//button[contains(@class, 'language-selector') or contains(text(), 'English')]"))  # Adjust selector as needed
-            )
-            language_button.click()
-
-            # Map language codes to expected text in the language dropdown
-            language_map = {
-                'en': 'English',
-                'kh': 'ខ្មែរ',  # Khmer
-                'cn': '中文'     # Chinese
-            }
-
-            # Select the specified language
-            language_option = WebDriverWait(self.driver, 10).until(
-                EC.element_to_be_clickable((By.XPATH, f"//li[contains(text(), '{language_map[language]}')]"))  # Adjust selector as needed
-            )
-            language_option.click()
-
-            # Wait for page to reload/update after language change
+            current_url = self.driver.current_url
+            if "lang=" in current_url:
+                new_url = re.sub(r'lang=[^&]+', f'lang={language_code}', current_url)
+            else:
+                separator = "&" if "?" in current_url else "?"
+                new_url = f"{current_url}{separator}lang={language_code}"
+                
+            self.driver.get(new_url)
             time.sleep(2)
-
-            logger.info(f"Changed language to {language}")
-            return True
-        except Exception as e:
-            logger.error(f"Failed to change language to {language}: {str(e)}")
-            self.take_screenshot(f"language_change_failure_{language}")
+            logger.info(f"Attempted language change via URL: {new_url}")
+            return self.verify_language_change(language_code)
+        except:
+            pass
+            
+        logger.error(f"Failed to change language to {language_code}")
+        return False
+            
+    except Exception as e:
+        logger.error(f"Error changing language to {language_code}: {str(e)}")
+        self.take_screenshot(f"language_change_error_{language_code}")
+        return False
+        
+def verify_language_change(self, expected_language):
+        """Verify language was changed by checking known elements"""
+        try:
+            # Sample text in different languages for common UI elements
+            language_markers = {
+                'en': ['Dashboard', 'Account', 'Login', 'Settings'],
+                'kh': ['ផ្ទាំងគ្រប់គ្រង', 'គណនី', 'ចូល'],
+                'cn': ['仪表板', '账户', '登录']
+            }
+            
+            page_source = self.driver.page_source
+            markers = language_markers.get(expected_language, [])
+            
+            # Check if any language markers are present
+            for marker in markers:
+                if marker in page_source:
+                    return True
+                    
+            return False
+        except:
             return False
 
-    def navigate_to_page(self, menu_path):
+def navigate_to_page(self, menu_path):
         """
         Navigate to a specific page in the application
 
@@ -282,20 +356,6 @@ class TranslationTester:
             logger.error(f"Failed to navigate to {self.current_page}: {str(e)}")
             self.take_screenshot(f"navigation_failure_{self.current_page.replace(' > ', '_')}")
             return
-import os
-import time
-import pandas as pd
-import logging
-from datetime import datetime
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException, StaleElementReferenceException
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from openpyxl import load_workbook
-import re
 
 # Configure logging
 log_dir = "logs"
